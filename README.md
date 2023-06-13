@@ -1,4 +1,4 @@
-# CleanArchitecture_Dagger2
+# CleanArchitecture Dagger2 RxAndroid
 Technologies:
 - Clean Architecture (Design Pattern)
 - Dagger 2 (Dependence Inject)

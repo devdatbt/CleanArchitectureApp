@@ -6,19 +6,13 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.apper.R
 import com.example.apper.ui.base.BaseFragment
-import com.example.apper.ui.viewmodel.NoteViewModel
 import com.example.apper.utils.Status
 import com.example.domain.model.Note
 import kotlinx.android.synthetic.main.fragment_add.*
-import javax.inject.Inject
 
 class AddFragment : BaseFragment(R.layout.fragment_add) {
 
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -40,7 +34,7 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
                 val title = edtTitle.text.toString()
                 val content = edtContent.text.toString()
                 val time = System.currentTimeMillis()
-                mNoteViewModel.insertNote(Note(title, content, time))
+               // mNoteViewModel.insertNote(Note(title, content, time))
             }
         }
 

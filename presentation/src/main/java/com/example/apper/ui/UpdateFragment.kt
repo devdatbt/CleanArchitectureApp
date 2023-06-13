@@ -10,20 +10,15 @@ import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.viewmodel.NoteViewModel
 import kotlinx.android.synthetic.main.fragment_add.btn_back
 import kotlinx.android.synthetic.main.fragment_update.*
-import javax.inject.Inject
 
 
 class UpdateFragment : BaseFragment(R.layout.fragment_update) {
-
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
 
     private val mArgs: UpdateFragmentArgs by navArgs()
 
     private var mTimeId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
         mTimeId = mArgs.timeId
     }
@@ -58,11 +53,11 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                mNoteViewModel.updateNote(
-                    edtUpdateTitle.text.toString(),
-                    edtUpdateContent.text.toString(),
-                    mTimeId
-                )
+//                mNoteViewModel.updateNote(
+//                    edtUpdateTitle.text.toString(),
+//                    edtUpdateContent.text.toString(),
+//                    mTimeId
+//                )
             }
         }
     }

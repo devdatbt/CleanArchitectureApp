@@ -66,13 +66,19 @@ dependencies {
     def moshi_version = "1.13.0"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    /** dagger2 **/
-    def dagger_version = "2.43"
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+//    /** dagger2 **/
+//    def dagger_version = "2.43"
+//    implementation "com.google.dagger:dagger:$dagger_version"
+//    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+//    implementation "com.google.dagger:dagger-android:$dagger_version"
+//    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+//    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+
+    // Koin for the dependencies injections
+    def koin_version = "3.1.2"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-test:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     /** rx java, rx android **/
     def rxjava_version = "3.0.2"

@@ -8,10 +8,8 @@ import com.example.apper.utils.Resource
 import com.example.domain.model.Currency
 import com.example.domain.model.Note
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : BaseViewModel() {
+class NoteViewModel constructor(private val appUseCase: AppUseCase) : BaseViewModel() {
 
     private val _statusGetNote: MutableLiveData<Resource<List<Note>>> = MutableLiveData()
     val statusGetNote: LiveData<Resource<List<Note>>> = _statusGetNote
@@ -41,43 +39,43 @@ class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : Ba
         compositeDisposable.add(disposable)
     }
 
-    fun insertNote(note: Note) {
-        _statusNote.value = Resource.loading(null)
-        val disposable = appUseCase.addNoteUseCase
-            .invoke(note)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _statusNote.value = Resource.success("Insert successfully!")
-            }, {
-                _statusNote.value = Resource.error(null, it.message.toString())
-            })
-        compositeDisposable.add(disposable)
-    }
-
-    fun deleteNote(note: Note) {
-        _statusNote.value = Resource.loading(null)
-        val disposable = appUseCase.deleteNoteUseCase
-            .invoke(note)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _statusNote.value = Resource.loading("Delete successfully!")
-            }, {
-                _statusNote.value = Resource.error(null, it.message.toString())
-            })
-        compositeDisposable.add(disposable)
-    }
-
-    fun updateNote(title: String, content: String, time: Long) {
-        val disposable = appUseCase.updateNoteUseCase
-            .invoke(title = title, content = content, time = time)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _statusNote.value = Resource.loading("Update successfully!")
-            }, {
-                _statusNote.value = Resource.error(null, it.message.toString())
-            })
-        compositeDisposable.add(disposable)
-    }
+//    fun insertNote(note: Note) {
+//        _statusNote.value = Resource.loading(null)
+//        val disposable = appUseCase.addNoteUseCase
+//            .invoke(note)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                _statusNote.value = Resource.success("Insert successfully!")
+//            }, {
+//                _statusNote.value = Resource.error(null, it.message.toString())
+//            })
+//        compositeDisposable.add(disposable)
+//    }
+//
+//    fun deleteNote(note: Note) {
+//        _statusNote.value = Resource.loading(null)
+//        val disposable = appUseCase.deleteNoteUseCase
+//            .invoke(note)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                _statusNote.value = Resource.loading("Delete successfully!")
+//            }, {
+//                _statusNote.value = Resource.error(null, it.message.toString())
+//            })
+//        compositeDisposable.add(disposable)
+//    }
+//
+//    fun updateNote(title: String, content: String, time: Long) {
+//        val disposable = appUseCase.updateNoteUseCase
+//            .invoke(title = title, content = content, time = time)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                _statusNote.value = Resource.loading("Update successfully!")
+//            }, {
+//                _statusNote.value = Resource.error(null, it.message.toString())
+//            })
+//        compositeDisposable.add(disposable)
+//    }
 
     fun getCurrencyFromServer() {
         _statusGetCurrency.value = Resource.loading(null)

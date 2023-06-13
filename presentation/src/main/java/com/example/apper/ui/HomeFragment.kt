@@ -16,18 +16,13 @@ import com.example.apper.utils.Status
 import com.example.apper.utils.convertCurrency
 import com.example.domain.model.Note
 import kotlinx.android.synthetic.main.fragment_home.*
-import javax.inject.Inject
 
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
-
     private lateinit var mAdapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -58,7 +53,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private val onItemDelete: (Note) -> Unit = {
-        mNoteViewModel.deleteNote(it)
+       // mNoteViewModel.deleteNote(it)
     }
 
     private fun initEvents() {
@@ -74,7 +69,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if (s.isEmpty()) mNoteViewModel.getSearchNoteLists()
+               // if (s.isEmpty()) mNoteViewModel.getSearchNoteLists()
             }
 
             override fun beforeTextChanged(
@@ -87,7 +82,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                mNoteViewModel.getSearchNoteLists(s.toString())
+             //   mNoteViewModel.getSearchNoteLists(s.toString())
             }
         })
     }

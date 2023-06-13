@@ -15,23 +15,23 @@ abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun noteDao(): NoteDao
 
-    companion object {
-
-        @Volatile
-        private var instance: NoteDatabase? = null
-
-        fun getInstance(context: Context): NoteDatabase {
-            return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
-            }
-        }
-
-        private fun buildDatabase(context: Context): NoteDatabase {
-            return Room.databaseBuilder(
-                context,
-                NoteDatabase::class.java,
-                DATABASE_NAME
-            ).build()
-        }
-    }
+//    companion object {
+//
+//        @Volatile
+//        private var instance: NoteDatabase? = null
+//
+//        fun getInstance(context: Context): NoteDatabase {
+//            return instance ?: synchronized(this) {
+//                instance ?: buildDatabase(context).also { instance = it }
+//            }
+//        }
+//
+//        private fun buildDatabase(context: Context): NoteDatabase {
+//            return Room.databaseBuilder(
+//                context,
+//                NoteDatabase::class.java,
+//                DATABASE_NAME
+//            ).build()
+//        }
+//    }
 }
