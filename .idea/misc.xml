@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/drawable/bg_add_button.xml" value="0.135" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/drawable/bg_rounded_corners.xml" value="0.193" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1815" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1365" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/layout/activity_main.xml" value="0.16" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/layout/fragment_add.xml" value="0.2" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/FPT/AppER/presentation/src/main/res/layout/item_note.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_200">#FF000000</color>
+    <color name="black_500">#E60B0B0B</color>
+    <color name="black_600">#E6191919</color>
+    <color name="black_700">#CB1F1F1F</color>
+    <color name="black_900">#CB2E2E2E</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_300">#D2FFFFFF</color>
+    <color name="yellow">#FFC107</color>
+
+    <color name="blue">#108FF5</color>
+    <color name="purple">#673AB7</color>
+    <color name="green">#4CAF50</color>
+    <color name="blue2">#00BCD4</color>
+    <color name="red">#F44336</color>
+
+    <integer-array name="itemLayoutColors">
+        <item>@color/blue</item>
+        <item>@color/purple</item>
+        <item>@color/green</item>
+        <item>@color/blue2</item>
+        <item>@color/red</item>
+        <item>@color/black_900</item>
+    </integer-array>
+</resources>
