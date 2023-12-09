@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun initGetData() {
         mNoteViewModel.getCurrencyFromServer()
-        mNoteViewModel.getSearchNoteLists()
+        //mNoteViewModel.getSearchNoteLists()
     }
 
     private val onItemClick: (Note) -> Unit = {
