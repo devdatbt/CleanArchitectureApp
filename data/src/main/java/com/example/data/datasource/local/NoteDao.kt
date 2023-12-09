@@ -21,4 +21,7 @@ interface NoteDao {
 
     @Query("select * from note_table where timestamp=:id")
     fun getNoteWithId(id: Long): Flowable<NoteEntity>
+
+    @Query("SELECT * FROM note_table ORDER BY timestamp ASC LIMIT :limit OFFSET :offset")
+    suspend fun getPagedList(limit: Int, offset: Int): List<NoteEntity>
 }

@@ -6,16 +6,25 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apper.R
+import com.example.apper.paging.MainAdapter
 import com.example.apper.adapter.NoteAdapter
+import com.example.apper.paging.MainLoadStateAdapter
+import com.example.apper.paging.MainViewModelFactory
+import com.example.apper.paging.PagingViewModel
 import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.viewmodel.NoteViewModel
 import com.example.apper.utils.Status
 import com.example.apper.utils.convertCurrency
+import com.example.data.datasource.local.NoteDao
 import com.example.domain.model.Note
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -26,6 +35,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private lateinit var mAdapter: NoteAdapter
 
+    @Inject
+    lateinit var dao: NoteDao
+
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -33,11 +45,23 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val viewModel: PagingViewModel by viewModels { MainViewModelFactory(dao) }
 
-        initViews()
+        val adapter = MainAdapter(onItemDelete, onItemClick)
+        rvNoteHome.adapter = adapter.withLoadStateFooter(
+            MainLoadStateAdapter()
+        )
+
+        lifecycleScope.launch {
+            viewModel.data.collectLatest {
+                adapter.submitData(it)
+            }
+        }
+
+//        initViews()
         initEvents()
-        initGetData()
-        handleObservers()
+//        initGetData()
+//        handleObservers()
     }
 
     private fun initViews() {
