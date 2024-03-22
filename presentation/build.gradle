@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -37,6 +38,10 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+    }
+    // Allow references to generated code
+    kapt {
+        correctErrorTypes = true
     }
 }
 
@@ -83,12 +88,19 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
     /** dagger2 **/
-    def dagger_version = "2.43"
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+//    def dagger_version = "2.43"
+//    implementation "com.google.dagger:dagger:$dagger_version"
+//    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+//    implementation "com.google.dagger:dagger-android:$dagger_version"
+//    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+//    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+
+    /** dagger hilt **/
+    def dagger_hilt_version = "2.44"
+    implementation("com.google.dagger:hilt-android:$dagger_hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$dagger_hilt_version")
+//    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+//    kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     /** glide **/
     def glide_version = "4.13.2"

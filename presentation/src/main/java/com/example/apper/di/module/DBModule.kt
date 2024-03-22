@@ -1,21 +1,24 @@
 package com.example.apper.di.module
 
 import android.app.Application
-import com.example.apper.di.ApplicationScope
 import com.example.data.datasource.local.NoteDao
 import com.example.data.datasource.local.NoteDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 object DBModule {
 
     @Provides
-    @ApplicationScope
+    @Singleton
     fun provideDatabase(application: Application): NoteDatabase = NoteDatabase.getInstance(application)
 
     @Provides
-    @ApplicationScope
+    @Singleton
     fun provideNoteRepository(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()
 
 }

@@ -2,16 +2,18 @@ package com.example.apper.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.apper.ui.base.BaseViewModel
+import androidx.lifecycle.ViewModel
 import com.example.apper.usecase.AppUseCase
 import com.example.apper.utils.Resource
 import com.example.domain.model.Currency
 import com.example.domain.model.Note
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : BaseViewModel() {
+@HiltViewModel
+open class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : ViewModel() {
 
     private val _statusGetNote: MutableLiveData<Resource<List<Note>>> = MutableLiveData()
     val statusGetNote: LiveData<Resource<List<Note>>> = _statusGetNote
@@ -94,5 +96,11 @@ class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : Ba
                 _statusGetCurrency.value = Resource.error(null, it.message ?: "Error")
             })
         compositeDisposable.add(disposable)
+    }
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }

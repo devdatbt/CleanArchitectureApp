@@ -15,19 +15,16 @@ import com.example.apper.ui.viewmodel.NoteViewModel
 import com.example.apper.utils.Status
 import com.example.apper.utils.convertCurrency
 import com.example.domain.model.Note
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
-
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
 
     private lateinit var mAdapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 

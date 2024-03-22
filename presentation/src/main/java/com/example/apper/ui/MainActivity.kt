@@ -1,13 +1,13 @@
 package com.example.apper.ui
 
 import android.os.Bundle
-import com.example.apper.NoteApplication
+import androidx.appcompat.app.AppCompatActivity
 import com.example.apper.R
-import com.example.apper.ui.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : BaseActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
