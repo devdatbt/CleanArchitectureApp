@@ -48,7 +48,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private fun initGetData() {
-        mNoteViewModel.getCurrencyFromServer()
         mNoteViewModel.getSearchNoteLists()
     }
 
@@ -78,14 +77,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
 
             override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
+                s: CharSequence, start: Int, count: Int, after: Int
             ) {
             }
 
             override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
+                s: CharSequence, start: Int, before: Int, count: Int
             ) {
                 mNoteViewModel.getSearchNoteLists(s.toString())
             }
@@ -94,25 +91,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     @SuppressLint("SetTextI18n")
     private fun handleObservers() {
-
-        mNoteViewModel.statusGetCurrency.observe(viewLifecycleOwner) {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.LOADING -> {
-                        swipeRefreshLayout.isRefreshing = true
-                    }
-                    Status.SUCCESS -> {
-                        swipeRefreshLayout.isRefreshing = false
-                        tvCurrencyVietnam.text =
-                            it.data?.usdVnd?.convertCurrency() + context?.resources?.getString(R.string.txt_VND)
-                    }
-                    Status.ERROR -> {
-                        swipeRefreshLayout.isRefreshing = false
-                        showToast(context?.resources?.getString(R.string.txt_error_data_server) + resource.message)
-                    }
-                }
-            }
-        }
 
         mNoteViewModel.statusGetNote.observe(viewLifecycleOwner) {
             it?.let { resource ->
