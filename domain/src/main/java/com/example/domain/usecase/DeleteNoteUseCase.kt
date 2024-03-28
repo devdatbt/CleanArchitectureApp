@@ -5,5 +5,5 @@ import com.example.domain.repository.NoteRepository
 import javax.inject.Inject
 
 class DeleteNoteUseCase @Inject constructor(private val noteRepository: NoteRepository) {
-    fun invoke(note: Note) = noteRepository.deleteNote(note)
+    suspend fun invoke(note: Note) = noteRepository.deleteNote(note)
 }

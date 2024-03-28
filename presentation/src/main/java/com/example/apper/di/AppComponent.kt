@@ -9,6 +9,7 @@ import com.example.apper.ui.MainActivity
 import com.example.apper.ui.UpdateFragment
 import com.example.apper.di.module.DBModule
 import com.example.apper.di.module.RepositoryModule
+import com.example.apper.ui.base.BaseFragment
 import dagger.BindsInstance
 import dagger.Component
 

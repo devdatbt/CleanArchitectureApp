@@ -3,13 +3,16 @@ package com.example.apper.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.apper.R
 import com.example.apper.ui.base.BaseFragment
+import com.example.apper.ui.event.EventNote
 import com.example.apper.ui.viewmodel.NoteViewModel
 import kotlinx.android.synthetic.main.fragment_add.btn_back
 import kotlinx.android.synthetic.main.fragment_update.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -36,9 +39,9 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
     }
 
     private fun handleObservers() {
-        mNoteViewModel.statusNote.observe(viewLifecycleOwner) {
-            it?.let { resource ->
-                Toast.makeText(context, resource.data.toString(), Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            mNoteViewModel.statusMessage.observe(requireActivity()) {
+                Toast.makeText(context, "${it.getContent()}", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
@@ -58,10 +61,12 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                mNoteViewModel.updateNote(
-                    edtUpdateTitle.text.toString(),
-                    edtUpdateContent.text.toString(),
-                    mTimeId
+                mNoteViewModel.onEventNote(
+                    EventNote.EventUpdateNote(
+                        edtUpdateTitle.text.toString(),
+                        edtUpdateContent.text.toString(),
+                        mTimeId
+                    )
                 )
             }
         }

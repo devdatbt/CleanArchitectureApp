@@ -1,24 +1,22 @@
 package com.example.data.datasource.local
 
 import androidx.room.*
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
     @Query("select * from note_table")
-    fun getNoteLists(): Flowable<List<NoteEntity>>
+    fun getNoteLists(): Flow<List<NoteEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNote(entity: NoteEntity): Completable
+    suspend fun insertNote(entity: NoteEntity)
 
     @Query("UPDATE note_table SET title = :title, content = :content WHERE timestamp = :time")
-    fun updateNote(title: String, content: String, time: Long): Completable
+    suspend fun updateNote(title: String, content: String, time: Long)
 
     @Delete
-    fun deleteNote(entity: NoteEntity): Single<Int>
+    suspend fun deleteNote(entity: NoteEntity)
 
     @Query("select * from note_table where timestamp=:id")
-    fun getNoteWithId(id: Long): Flowable<NoteEntity>
+    fun getNoteWithId(id: Long): Flow<NoteEntity>
 }

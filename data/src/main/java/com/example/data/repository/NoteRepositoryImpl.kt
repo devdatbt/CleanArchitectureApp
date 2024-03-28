@@ -4,40 +4,48 @@ import com.example.data.datasource.local.NoteDao
 import com.example.data.datasource.local.NoteEntity
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) : NoteRepository {
-    override fun getNoteLists(): Flowable<List<Note>> = noteDao.getNoteLists()
-        .subscribeOn(Schedulers.io())
-        .map {
-            it.map { enRichEntity ->
-                enRichEntity.toNote()
-            }
+
+    private val dispatchersIO = Dispatchers.IO
+
+    override val getAllNotes: Flow<List<Note>>
+        get() = noteDao.getNoteLists()
+            .map {
+                it.map { itemNote ->
+                    itemNote.toNote()
+                }
+            }.flowOn(dispatchersIO)
+            .conflate()
+
+    override suspend fun insertNote(note: Note) = withContext(dispatchersIO) {
+        val noteEntity = NoteEntity.fromNote(note)
+        noteDao.insertNote(noteEntity)
+    }
+
+    override suspend fun updateNote(title: String, content: String, time: Long) =
+        withContext(dispatchersIO) {
+            noteDao.updateNote(title = title, content = content, time = time)
         }
 
-    override fun insertNote(note: Note): Completable {
+    override suspend fun deleteNote(note: Note) = withContext(dispatchersIO) {
         val noteEntity = NoteEntity.fromNote(note)
-        return noteDao.insertNote(noteEntity).subscribeOn(Schedulers.io())
+        noteDao.deleteNote(noteEntity)
     }
 
-    override fun updateNote(title: String, content: String, time: Long): Completable {
-        return noteDao.updateNote(title = title, content = content, time = time)
-            .subscribeOn(Schedulers.io())
-    }
-
-    override fun deleteNote(note: Note): Single<Int> {
-        val noteEntity = NoteEntity.fromNote(note)
-        return noteDao.deleteNote(noteEntity).subscribeOn(Schedulers.io())
-    }
-
-    override fun getNoteWithId(id: Long): Flowable<Note> {
-        return noteDao.getNoteWithId(id).subscribeOn(Schedulers.io())
+    override fun getNoteWithId(id: Long): Flow<Note> {
+        return noteDao.getNoteWithId(id)
             .map {
                 it.toNote()
-            }.onBackpressureDrop()
+            }
+            .flowOn(dispatchersIO)
+            .conflate()
     }
 }

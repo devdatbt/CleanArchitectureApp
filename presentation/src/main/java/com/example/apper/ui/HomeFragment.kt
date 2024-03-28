@@ -1,25 +1,29 @@
 package com.example.apper.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apper.R
 import com.example.apper.adapter.NoteAdapter
 import com.example.apper.ui.base.BaseFragment
+import com.example.apper.ui.event.EventNote
 import com.example.apper.ui.viewmodel.NoteViewModel
-import com.example.apper.utils.Status
-import com.example.apper.utils.convertCurrency
 import com.example.domain.model.Note
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
+
+    private var listFilter: List<Note>? = null
 
     @Inject
     lateinit var mNoteViewModel: NoteViewModel
@@ -40,6 +44,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         handleObservers()
     }
 
+    private fun handleObservers() {
+        lifecycleScope.launch {
+            mNoteViewModel.statusMessage.observe(requireActivity()) {
+                Toast.makeText(context, "${it.getContent()}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun initViews() {
         mAdapter = NoteAdapter(onItemClick, onItemDelete)
         rvNoteHome.setHasFixedSize(true)
@@ -48,7 +60,21 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private fun initGetData() {
-        mNoteViewModel.getSearchNoteLists()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mNoteViewModel.listNoteStateIn.collect {
+                    listFilter = it
+                    if (it.isEmpty()) {
+                        rvNoteHome.visibility = View.GONE
+                        tvNoteEmpty.visibility = View.VISIBLE
+                    } else {
+                        rvNoteHome.visibility = View.VISIBLE
+                        tvNoteEmpty.visibility = View.GONE
+                        mAdapter.submitList(it)
+                    }
+                }
+            }
+        }
     }
 
     private val onItemClick: (Note) -> Unit = {
@@ -57,7 +83,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private val onItemDelete: (Note) -> Unit = {
-        mNoteViewModel.deleteNote(it)
+        mNoteViewModel.onEventNote(EventNote.EventDeleteNote(it))
     }
 
     private fun initEvents() {
@@ -73,7 +99,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if (s.isEmpty()) mNoteViewModel.getSearchNoteLists()
             }
 
             override fun beforeTextChanged(
@@ -84,58 +109,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             override fun onTextChanged(
                 s: CharSequence, start: Int, before: Int, count: Int
             ) {
-                mNoteViewModel.getSearchNoteLists(s.toString())
+                if (listFilter != null) {
+                    val listFiltered =
+                        mNoteViewModel.searchListNoteWith(s.toString(), listFilter = listFilter!!)
+                    rvNoteHome.removeAllViews()
+                    mAdapter.apply {
+                        submitList(listFiltered)
+                    }
+                }
             }
         })
     }
-
-    @SuppressLint("SetTextI18n")
-    private fun handleObservers() {
-
-        mNoteViewModel.statusGetNote.observe(viewLifecycleOwner) {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.LOADING -> {
-                        swipeRefreshLayout.isRefreshing = true
-                    }
-                    Status.SUCCESS -> {
-                        swipeRefreshLayout.isRefreshing = false
-                        if (resource.data!!.isEmpty()) {
-                            rvNoteHome.visibility = View.GONE
-                            tvNoteEmpty.visibility = View.VISIBLE
-                        } else {
-                            rvNoteHome.visibility = View.VISIBLE
-                            tvNoteEmpty.visibility = View.GONE
-                            mAdapter.submitList(resource.data)
-                        }
-                    }
-                    Status.ERROR -> {
-                        swipeRefreshLayout.isRefreshing = false
-                        showToast(context?.resources?.getString(R.string.txt_error_data_local) + resource.message)
-                    }
-                }
-            }
-        }
-
-        mNoteViewModel.statusNote.observe(viewLifecycleOwner) {
-            it?.let {
-                when (it.status) {
-                    Status.LOADING -> {
-
-                    }
-                    Status.SUCCESS -> {
-                        showToast(it.data.toString())
-                    }
-                    Status.ERROR -> {
-
-                    }
-                }
-            }
-        }
-    }
-
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-    }
-
 }

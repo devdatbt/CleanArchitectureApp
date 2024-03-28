@@ -4,5 +4,5 @@ import com.example.domain.repository.NoteRepository
 import javax.inject.Inject
 
 class GetNoteListsUseCase @Inject constructor (private val noteRepository: NoteRepository) {
-    fun invoke() = noteRepository.getNoteLists()
+     fun invoke() = noteRepository.getAllNotes
 }
