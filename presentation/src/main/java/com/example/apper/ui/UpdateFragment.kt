@@ -1,17 +1,18 @@
 package com.example.apper.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.apper.R
+import com.example.apper.databinding.FragmentUpdateBinding
 import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.event.EventNote
 import com.example.apper.ui.viewmodel.NoteViewModel
-import kotlinx.android.synthetic.main.fragment_add.btn_back
-import kotlinx.android.synthetic.main.fragment_update.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +25,18 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
     private val mArgs: UpdateFragmentArgs by navArgs()
 
     private var mTimeId: Long = 0
+
+    private var _binding: FragmentUpdateBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentUpdateBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -48,12 +61,12 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
     }
 
     private fun initEvents() {
-        btn_back.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
-        tvUpdate.setOnClickListener {
-            if (edtUpdateContent.text.toString().isEmpty()
-                || edtUpdateTitle.text.toString().isEmpty()
+        binding.tvUpdate.setOnClickListener {
+            if (binding.edtUpdateContent.text.toString().isEmpty()
+                || binding.edtUpdateTitle.text.toString().isEmpty()
             ) {
                 Toast.makeText(
                     context,
@@ -63,12 +76,17 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
             } else {
                 mNoteViewModel.onEventNote(
                     EventNote.EventUpdateNote(
-                        edtUpdateTitle.text.toString(),
-                        edtUpdateContent.text.toString(),
+                        binding.edtUpdateTitle.text.toString(),
+                        binding.edtUpdateContent.text.toString(),
                         mTimeId
                     )
                 )
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

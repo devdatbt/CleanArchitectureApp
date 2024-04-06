@@ -3,7 +3,9 @@ package com.example.apper.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,11 +14,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apper.R
 import com.example.apper.adapter.NoteAdapter
+import com.example.apper.databinding.FragmentHomeBinding
 import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.event.EventNote
 import com.example.apper.ui.viewmodel.NoteViewModel
 import com.example.domain.model.Note
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,9 +32,19 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private lateinit var mAdapter: NoteAdapter
 
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,16 +59,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun handleObservers() {
         lifecycleScope.launch {
             mNoteViewModel.statusMessage.observe(requireActivity()) {
-                Toast.makeText(context, "${it.getContent()}", Toast.LENGTH_SHORT).show()
+                it.getContent()?.let { content ->
+                    Toast.makeText(context, "$content", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun initViews() {
         mAdapter = NoteAdapter(onItemClick, onItemDelete)
-        rvNoteHome.setHasFixedSize(true)
-        rvNoteHome.layoutManager = LinearLayoutManager(context)
-        rvNoteHome.adapter = mAdapter
+        binding.rvNoteHome.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = mAdapter
+        }
     }
 
     private fun initGetData() {
@@ -64,12 +80,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mNoteViewModel.listNoteStateIn.collect {
                     listFilter = it
+                    binding.swipeRefreshLayout.isRefreshing = false
                     if (it.isEmpty()) {
-                        rvNoteHome.visibility = View.GONE
-                        tvNoteEmpty.visibility = View.VISIBLE
+                        binding.rvNoteHome.visibility = View.GONE
+                        binding.tvNoteEmpty.visibility = View.VISIBLE
                     } else {
-                        rvNoteHome.visibility = View.VISIBLE
-                        tvNoteEmpty.visibility = View.GONE
+                        binding.rvNoteHome.visibility = View.VISIBLE
+                        binding.tvNoteEmpty.visibility = View.GONE
                         mAdapter.submitList(it)
                     }
                 }
@@ -88,16 +105,21 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun initEvents() {
 
-        btnNavAddNote.setOnClickListener {
+        binding.btnLogout.setOnClickListener {
+            mNoteViewModel.signOut()
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
+        }
+
+        binding.btnNavAddNote.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddFragment()
             findNavController().navigate(action)
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             initGetData()
         }
 
-        edtSearch.addTextChangedListener(object : TextWatcher {
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -112,12 +134,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 if (listFilter != null) {
                     val listFiltered =
                         mNoteViewModel.searchListNoteWith(s.toString(), listFilter = listFilter!!)
-                    rvNoteHome.removeAllViews()
+                    binding.rvNoteHome.removeAllViews()
                     mAdapter.apply {
                         submitList(listFiltered)
                     }
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

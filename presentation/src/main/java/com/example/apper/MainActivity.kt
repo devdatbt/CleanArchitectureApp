@@ -1,4 +1,4 @@
-package com.example.apper.ui
+package com.example.apper
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.apper.R
 import com.example.apper.ui.base.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : BaseActivity() {
 
@@ -28,5 +28,15 @@ class MainActivity : BaseActivity() {
                 navView.visibility = View.VISIBLE
             }
         }
+
+        val inflater = navHostFragment.navController.navInflater
+        val graph = inflater.inflate(R.navigation.nav_graph)
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            graph.setStartDestination(R.id.homeFragment)
+        } else {
+            graph.setStartDestination(R.id.loginFragment)
+        }
+        navController.setGraph(graph, intent.extras)
     }
 }

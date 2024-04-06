@@ -65,7 +65,12 @@ class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : Ba
         launchDataLoad {
             appUseCase.addNoteUseCase.invoke(note)
         }.invokeOnCompletion {
-            _statusMessage.value = EventShowMsg("Add successfully")
+            val hashMap = hashMapOf(
+                "title" to note.title.toString().trim(),
+                "content" to note.content.toString().trim(),
+                "timestamp" to note.timestamp.toString()
+            )
+            addItemNoteFireStore(note.timestamp.toString(), hashMap)
         }
     }
 
@@ -73,7 +78,7 @@ class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : Ba
         launchDataLoad {
             appUseCase.deleteNoteUseCase.invoke(note)
         }.invokeOnCompletion {
-            _statusMessage.value = EventShowMsg("Delete successfully")
+            deleteItemNoteFireStore(note.timestamp.toString())
         }
     }
 
@@ -102,6 +107,39 @@ class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : Ba
             listFilter
         } else {
             listFilter.filter { note -> note.getTitleContainsWord(searchValue) }
+        }
+    }
+
+    fun signOut() {
+        launchDataLoad {
+            appUseCase.signOutUseCase.invoke()
+        }
+    }
+
+    private fun addItemNoteFireStore(
+        timeStamp: String,
+        hashMap: HashMap<String, String>
+    ) {
+        launchDataLoad {
+            appUseCase.addItemToFireStoreUseCase.invoke(timeStamp, hashMap) {
+                if (it)
+                    _statusMessage.value = EventShowMsg("Add to fire store successfully.")
+                else
+                    _statusMessage.value = EventShowMsg("Add to fire store failed!")
+            }
+        }
+    }
+
+    private fun deleteItemNoteFireStore(
+        timeStamp: String
+    ) {
+        launchDataLoad {
+            appUseCase.deleteItemToFireStoreUseCase.invoke(timeStamp) {
+                if (it)
+                    _statusMessage.value = EventShowMsg("Delete to fire store successfully.")
+                else
+                    _statusMessage.value = EventShowMsg("Delete to fire store failed!")
+            }
         }
     }
 

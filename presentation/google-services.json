@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "820328354429",
+    "project_id": "apper-7570b",
+    "storage_bucket": "apper-7570b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820328354429:android:5fa0b363cf5ee792a29714",
+        "android_client_info": {
+          "package_name": "com.example.apper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVx8Gk5KeQ-QWAcjruEW5_VVZTZM2qWBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

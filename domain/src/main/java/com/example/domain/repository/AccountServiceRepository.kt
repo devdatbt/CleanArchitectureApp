@@ -15,4 +15,16 @@ interface AccountServiceRepository {
     suspend fun linkAccount(email: String, password: String)
     suspend fun deleteAccount()
     suspend fun signOut()
+
+    //Firestore
+    suspend fun addItemToFireStore(
+        timeStamp: String,
+        hashMap: HashMap<String, String>,
+        isSuccess: (Boolean) -> Unit
+    )
+
+    suspend fun deleteItemToFireStore(
+        timeStamp: String,
+        isSuccess: (Boolean) -> Unit
+    )
 }

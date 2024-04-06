@@ -1,19 +1,22 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
     namespace 'com.example.apper'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.apper"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -95,4 +98,16 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
+    /* firebase */
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Declare the dependency for the Firebase Authentication library
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx'
+
+    // Maps SDK for Android
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
 }

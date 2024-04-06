@@ -1,15 +1,9 @@
 package com.example.apper.di
 
 import android.app.Application
-import com.example.apper.di.module.APIModule
-import com.example.apper.di.module.AppModule
-import com.example.apper.ui.AddFragment
-import com.example.apper.ui.HomeFragment
-import com.example.apper.ui.MainActivity
-import com.example.apper.ui.UpdateFragment
-import com.example.apper.di.module.DBModule
-import com.example.apper.di.module.RepositoryModule
-import com.example.apper.ui.base.BaseFragment
+import com.example.apper.MainActivity
+import com.example.apper.di.module.*
+import com.example.apper.ui.*
 import dagger.BindsInstance
 import dagger.Component
 
@@ -19,7 +13,8 @@ import dagger.Component
         DBModule::class,
         AppModule::class,
         APIModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        FirebaseModule::class
     ]
 )
 interface AppComponent {
@@ -28,6 +23,7 @@ interface AppComponent {
     fun inject(fragment: HomeFragment)
     fun inject(fragment: AddFragment)
     fun inject(fragment: UpdateFragment)
+    fun inject(fragment: LoginFragment)
 
     @Component.Builder
     interface Builder {

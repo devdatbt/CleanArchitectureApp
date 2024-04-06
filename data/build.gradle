@@ -1,4 +1,4 @@
-    plugins {
+plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
@@ -74,5 +74,13 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-support:$dagger_version"
 
+    /* firebase */
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    // Declare the dependency for the Firebase Authentication library
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx'
 }
