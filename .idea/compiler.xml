@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="AppER.data" target="11" />
-      <module name="AppER.presentation" target="11" />
+      <module name="AppER.data" target="17" />
+      <module name="AppER.presentation" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
