@@ -5,3 +5,10 @@ Technologies:
 - Rx Android, Rx Java
 - RoomBD
 - Retrofit
+
+  # Add new 
+- Google Map
+- Firebase
+- Koin
+- Hilt
+- Paging 3
