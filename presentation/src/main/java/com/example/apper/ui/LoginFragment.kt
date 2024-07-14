@@ -9,19 +9,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.apper.R
 import com.example.apper.databinding.FragmentLoginBinding
 import com.example.apper.ui.base.BaseFragment
-import com.example.apper.ui.viewmodel.LoginViewModel
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : BaseFragment(R.layout.fragment_login) {
-
-    @Inject
-    lateinit var mLoginViewModel: LoginViewModel
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -48,7 +44,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                     val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                     findNavController().navigate(action)
                 } else {
-                    Toast.makeText(context, "Login failed!!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
                 }
             }
         }

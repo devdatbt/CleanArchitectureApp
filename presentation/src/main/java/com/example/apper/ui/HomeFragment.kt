@@ -19,16 +19,15 @@ import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.event.EventNote
 import com.example.apper.ui.viewmodel.NoteViewModel
 import com.example.domain.model.Note
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private var listFilter: List<Note>? = null
-
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
 
     private lateinit var mAdapter: NoteAdapter
 
@@ -36,7 +35,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 

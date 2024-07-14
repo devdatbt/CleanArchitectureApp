@@ -12,15 +12,11 @@ import com.example.apper.R
 import com.example.apper.databinding.FragmentUpdateBinding
 import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.event.EventNote
-import com.example.apper.ui.viewmodel.NoteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class UpdateFragment : BaseFragment(R.layout.fragment_update) {
-
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
 
     private val mArgs: UpdateFragmentArgs by navArgs()
 
@@ -39,7 +35,6 @@ class UpdateFragment : BaseFragment(R.layout.fragment_update) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
         mTimeId = mArgs.timeId
     }

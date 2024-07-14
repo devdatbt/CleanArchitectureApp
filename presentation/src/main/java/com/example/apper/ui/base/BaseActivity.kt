@@ -2,9 +2,7 @@ package com.example.apper.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
 import com.example.apper.NoteApplication
+import dagger.hilt.android.AndroidEntryPoint
 
-open class BaseActivity : AppCompatActivity() {
-    val appComponent by lazy {
-        (application as NoteApplication).appComponent
-    }
-}
+@AndroidEntryPoint
+open class BaseActivity : AppCompatActivity()

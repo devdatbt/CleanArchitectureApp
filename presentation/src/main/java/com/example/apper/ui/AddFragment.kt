@@ -1,29 +1,24 @@
 package com.example.apper.ui
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.apper.R
 import com.example.apper.databinding.FragmentAddBinding
-import com.example.apper.databinding.FragmentUpdateBinding
 import com.example.apper.ui.base.BaseFragment
 import com.example.apper.ui.common.AppProgressBar
 import com.example.apper.ui.event.EventNote
 import com.example.apper.ui.viewmodel.NoteViewModel
 import com.example.domain.model.Note
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AddFragment : BaseFragment(R.layout.fragment_add) {
-
-    @Inject
-    lateinit var mNoteViewModel: NoteViewModel
 
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
@@ -39,7 +34,6 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 

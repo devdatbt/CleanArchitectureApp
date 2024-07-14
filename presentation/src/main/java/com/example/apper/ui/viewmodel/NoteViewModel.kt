@@ -11,9 +11,11 @@ import com.example.apper.usecase.AppUseCase
 import com.example.apper.utils.Resource
 import com.example.domain.model.Currency
 import com.example.domain.model.Note
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
+@HiltViewModel
 class NoteViewModel @Inject constructor(private val appUseCase: AppUseCase) : BaseViewModel() {
 
     private val TAG = NoteViewModel::class.java.simpleName

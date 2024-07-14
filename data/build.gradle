@@ -29,6 +29,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    // Allow references to generated code
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -66,13 +70,10 @@ dependencies {
     def moshi_version = "1.13.0"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    /** dagger2 **/
-    def dagger_version = "2.43"
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+    /** dagger hilt **/
+    def dagger_hilt_version = "2.44"
+    implementation("com.google.dagger:hilt-android:$dagger_hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$dagger_hilt_version")
 
     /* firebase */
     // Import the BoM for the Firebase platform
