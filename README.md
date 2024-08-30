@@ -1,4 +1,4 @@
-# CleanArchitecture Dagger2 RxAndroid
+# CleanArchitecture
 Technologies:
 - Clean Architecture (Design Pattern)
 - Dagger 2 (Dependence Inject)
@@ -6,7 +6,7 @@ Technologies:
 - RoomBD
 - Retrofit
 
-  # Add new 
+  # New version
 - Google Map
 - Firebase
 - Koin
