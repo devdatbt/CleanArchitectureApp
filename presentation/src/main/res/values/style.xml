@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="collapsedBarTextStyle" parent="Theme.AppER">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/color_2</item>
+    </style>
+    <style name="expandedBarTextStyle" parent="Theme.AppER">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">@color/background_color_1</item>
+    </style>
+</resources>

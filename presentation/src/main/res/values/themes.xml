@@ -7,15 +7,12 @@
         <item name="colorOnPrimary">@color/color_2</item>
         <item name="backgroundColor">@color/background_color_2</item>
         <item name="background">@color/background_color_1</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black_200</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="titleTextColor">@color/color_2</item>
         <item name="backgroundColorHeader">@color/background_color_1</item>
         <item name="backgroundColorBody">@color/background_color_2</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 </resources>

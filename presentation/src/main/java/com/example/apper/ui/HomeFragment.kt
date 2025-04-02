@@ -123,7 +123,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 if (listFilter != null) {
                     val listFiltered =
                         mNoteViewModel.searchListNoteWith(s.toString(), listFilter = listFilter!!)
-                    binding.rvNoteHome.removeAllViews()
                     mAdapter.apply {
                         submitList(listFiltered)
                     }

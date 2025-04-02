@@ -41,9 +41,9 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.apper.ui.SettingFragment"
+        android:name="com.example.apper.ui.ProfileFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.apper.ui.LoginFragment"
