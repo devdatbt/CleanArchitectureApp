@@ -29,11 +29,12 @@ class MainActivity : AppCompatActivity() {
         val inflater = navHostFragment.navController.navInflater
         val graph = inflater.inflate(R.navigation.nav_graph)
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
-            graph.setStartDestination(R.id.homeFragment)
-        } else {
-            graph.setStartDestination(R.id.loginFragment)
-        }
+//        if (currentUser != null) {
+//            graph.setStartDestination(R.id.homeFragment)
+//        } else {
+//            graph.setStartDestination(R.id.loginFragment)
+//        }
+        graph.setStartDestination(R.id.splashFragment)
         navController.setGraph(graph, intent.extras)
     }
 }
