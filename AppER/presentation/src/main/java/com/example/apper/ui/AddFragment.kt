@@ -17,7 +17,7 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
 
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
-    private lateinit var appProgressBar: AppProgressBar
+    private var appProgressBar: AppProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +45,7 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
 
     private fun handleObservers() {
         mNoteViewModel.statusMessage.observe(requireActivity()) {
-            appProgressBar.endLoading()
+            appProgressBar?.endLoading()
             findNavController().popBackStack()
         }
     }
@@ -61,7 +61,7 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                appProgressBar.startLoading()
+                appProgressBar?.startLoading()
                 val title = binding.edtTitle.text.toString()
                 val content = binding.edtContent.text.toString()
                 val time = System.currentTimeMillis()
@@ -76,7 +76,8 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        appProgressBar.endLoading()
+        appProgressBar?.endLoading()
+        appProgressBar = null
         _binding = null
     }
 }
