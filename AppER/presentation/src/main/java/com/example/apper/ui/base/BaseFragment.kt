@@ -9,5 +9,4 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
     val mNoteViewModel: NoteViewModel by viewModel()
-    val mLoginViewModel: LoginViewModel by viewModel()
 }

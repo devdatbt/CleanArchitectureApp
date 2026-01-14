@@ -68,15 +68,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mNoteViewModel.listNoteStateIn.collect {
-                    listFilter = it
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    if (it.isEmpty()) {
-                        binding.rvNoteHome.visibility = View.GONE
-                        binding.tvNoteEmpty.visibility = View.VISIBLE
-                    } else {
-                        binding.rvNoteHome.visibility = View.VISIBLE
-                        binding.tvNoteEmpty.visibility = View.GONE
-                        mAdapter.submitList(it)
+                    binding.apply {
+                        listFilter = it
+                        swipeRefreshLayout.isRefreshing = false
+                        if (it.isEmpty()) {
+                            rvNoteHome.visibility = View.GONE
+                            tvNoteEmpty.visibility = View.VISIBLE
+                        } else {
+                            rvNoteHome.visibility = View.VISIBLE
+                            tvNoteEmpty.visibility = View.GONE
+                            mAdapter.submitList(it)
+                        }
                     }
                 }
             }
@@ -84,7 +86,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private val onItemClick: (Note) -> Unit = {
-        val action = HomeFragmentDirections.actionHomeFragmentToUpdateFragment(it.timestamp)
+        val action = HomeFragmentDirections.actionHomeFragmentToAddFragment(Note(
+            it.title,
+            it.content,
+            it.timestamp,
+            it.userId
+        ))
         findNavController().navigate(action)
     }
 
@@ -93,46 +100,45 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private fun initEvents() {
-
-        binding.btnLogout.setOnClickListener {
-            mNoteViewModel.signOut()
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
-        }
-
-        binding.btnNavAddNote.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToAddFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            initGetData()
-        }
-
-        binding.edtSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
+        binding.apply {
+            btnLogout.setOnClickListener {
+                mNoteViewModel.signOut()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
             }
-
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int, count: Int, after: Int
-            ) {
+            btnNavAddNote.setOnClickListener {
+                val action = HomeFragmentDirections.actionHomeFragmentToAddFragment(null)
+                findNavController().navigate(action)
             }
+            swipeRefreshLayout.setOnRefreshListener {
+                initGetData()
+            }
+            edtSearch.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                }
 
-            override fun onTextChanged(
-                s: CharSequence, start: Int, before: Int, count: Int
-            ) {
-                if (listFilter != null) {
-                    val listFiltered =
-                        mNoteViewModel.searchListNoteWith(s.toString(), listFilter = listFilter!!)
-                    mAdapter.apply {
-                        submitList(listFiltered)
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int, count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int, before: Int, count: Int
+                ) {
+                    if (listFilter != null) {
+                        val listFiltered =
+                            mNoteViewModel.searchListNoteWith(s.toString(), listFilter = listFilter!!)
+                        mAdapter.apply {
+                            submitList(listFiltered)
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        listFilter = null
         _binding = null
     }
 }

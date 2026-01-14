@@ -13,6 +13,7 @@ import com.example.domain.usecase.AutheticateUseCase
 import com.example.domain.usecase.DeleteItemToFireStoreUseCase
 import com.example.domain.usecase.DeleteNoteUseCase
 import com.example.domain.usecase.GetCurrencyUseCase
+import com.example.domain.usecase.GetCurrentUserUseCase
 import com.example.domain.usecase.GetNoteListsUseCase
 import com.example.domain.usecase.GetNoteWithIdUseCase
 import com.example.domain.usecase.SignOutUseCase
@@ -23,7 +24,7 @@ val useCaseModule = module {
     //repository
     single<NoteRepository> { NoteRepositoryImpl(get()) }
     single<CurrencyRepository> { CurrencyRepositoryImpl(get()) }
-    single<AccountServiceRepository> { AccountServiceImpl(get(), get()) }
+    single<AccountServiceRepository> { AccountServiceImpl(get(), get(), get()) }
 
     //use case note room db
     single { provideGetNoteListsUseCase(get()) }
@@ -42,7 +43,7 @@ val useCaseModule = module {
     //get all use case
     single {
         provideGetAppUseCase(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
 }
@@ -72,6 +73,9 @@ fun provideAddItemToFireStoreUseCase(accountServiceRepository: AccountServiceRep
 fun provideDeleteItemToFireStoreUseCase(accountServiceRepository: AccountServiceRepository) =
     DeleteItemToFireStoreUseCase(accountServiceRepository)
 
+fun provideGetCurrentUserUseCase(accountServiceRepository: AccountServiceRepository) =
+    GetCurrentUserUseCase(accountServiceRepository)
+
 fun provideGetAppUseCase(
     addNoteUseCase: AddNoteUseCase,
     deleteNoteUseCase: DeleteNoteUseCase,
@@ -83,6 +87,7 @@ fun provideGetAppUseCase(
     signOutUseCase: SignOutUseCase,
     addItemToFireStoreUseCase: AddItemToFireStoreUseCase,
     deleteItemToFireStoreUseCase: DeleteItemToFireStoreUseCase,
+    getCurrentUserUseCase: GetCurrentUserUseCase,
 ): AppUseCase {
     return AppUseCase(
         addNoteUseCase = addNoteUseCase,
@@ -94,6 +99,7 @@ fun provideGetAppUseCase(
         autheticateUseCase = autheticateUseCase,
         signOutUseCase = signOutUseCase,
         addItemToFireStoreUseCase = addItemToFireStoreUseCase,
-        deleteItemToFireStoreUseCase = deleteItemToFireStoreUseCase
+        deleteItemToFireStoreUseCase = deleteItemToFireStoreUseCase,
+        getCurrentUserUseCase = getCurrentUserUseCase,
     )
 }

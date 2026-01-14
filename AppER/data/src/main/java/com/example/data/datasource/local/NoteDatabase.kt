@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.data.DATABASE_NAME
 
 @Database(
-    entities = [NoteEntity::class],
+    entities = [NoteEntity::class, UserEntity::class],
     version = 1,
     exportSchema = false
 )

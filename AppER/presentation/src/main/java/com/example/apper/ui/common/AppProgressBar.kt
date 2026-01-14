@@ -39,4 +39,9 @@ class AppProgressBar(
         progressBar.visibility = View.INVISIBLE
         countDownTimer.cancel()
     }
+
+    companion object {
+        const val DEFAULT_COUNT_TIME = 10 * 1000L // 10 seconds
+        const val DEFAULT_TIME_INTERVAL = 1000L // 1 second
+    }
 }

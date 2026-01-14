@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.apper.R
 import com.example.apper.databinding.FragmentLoginBinding
 import com.example.apper.ui.base.BaseFragment
+import com.example.apper.ui.viewmodel.LoginViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginFragment : BaseFragment(R.layout.fragment_login) {
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
+    val mLoginViewModel: LoginViewModel by viewModel()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -33,16 +37,18 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     }
 
     private fun initView() {
-        binding.btnLogin.setOnClickListener {
-            mLoginViewModel.authenticateEmail(
-                binding.editTextEmail.text.toString().trim(),
-                binding.editTextPass.text.toString().trim()
-            ) { isLoginSuccess ->
-                if (isLoginSuccess) {
-                    val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                    findNavController().navigate(action)
-                } else {
-                    Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
+        binding.apply {
+            this.btnLogin.setOnClickListener {
+                mLoginViewModel.authenticateEmail(
+                    this.editTextEmail.text.toString().trim(),
+                    this.editTextPass.text.toString().trim()
+                ) { isLoginSuccess ->
+                    if (isLoginSuccess) {
+                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                        findNavController().navigate(action)
+                    } else {
+                        Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

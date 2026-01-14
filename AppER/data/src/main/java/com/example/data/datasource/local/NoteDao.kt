@@ -19,4 +19,18 @@ interface NoteDao {
 
     @Query("select * from note_table where timestamp=:id")
     fun getNoteWithId(id: Long): Flow<NoteEntity>
+
+    // Lấy danh sách ghi chú của người dùng theo userId
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(user: UserEntity): Long
+
+    @Query("SELECT * FROM user WHERE username = :username LIMIT 1")
+    suspend fun getUserByUsername(username: String): UserEntity?
+
+    @Query("SELECT * FROM user")
+    fun getAllUsers(): Flow<List<UserEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM user WHERE username = :userName")
+    suspend fun getUserWithNotes(userName: String): UserWithNotes
 }

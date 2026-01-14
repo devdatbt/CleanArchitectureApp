@@ -9,16 +9,18 @@ data class NoteEntity(
     val title: String? = "",
     val content: String? = "",
     @PrimaryKey
-    val timestamp: Long = 0
+    val timestamp: Long = 0,
+    val userId: String? = "" // Liên kết đến UserEntity
 ) {
 
-    fun toNote() = Note(title, content, timestamp)
+    fun toNote() = Note(title, content, timestamp, userId)
 
     companion object {
         fun fromNote(note: Note) = NoteEntity(
             note.title,
             note.content,
-            note.timestamp
+            note.timestamp,
+            note.userId
         )
     }
 }

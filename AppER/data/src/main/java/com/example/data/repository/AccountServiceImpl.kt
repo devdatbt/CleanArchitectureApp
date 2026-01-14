@@ -1,6 +1,8 @@
 package com.example.data.repository
 
 import android.util.Log
+import com.example.data.datasource.local.NoteDao
+import com.example.data.datasource.local.UserEntity
 import com.example.domain.model.User
 import com.example.domain.repository.AccountServiceRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +14,9 @@ import kotlinx.coroutines.tasks.await
 
 
 class AccountServiceImpl(
-    private val auth: FirebaseAuth, private val firestore: FirebaseFirestore
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore,
+    private val noteDao: NoteDao // Inject UserDao
 ) : AccountServiceRepository {
 
     override val currentUserId: String
@@ -35,10 +39,23 @@ class AccountServiceImpl(
         password: String,
         isSignInSuccess: (Boolean) -> Unit
     ) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            Log.d("authenticate", "signInWithEmailAndPassword isSuccess: ${task.isSuccessful}")
-            isSignInSuccess.invoke(task.isSuccessful)
-        }.await()
+        try {
+            val result = auth.signInWithEmailAndPassword(email, password).await()
+            val isSuccess = result.user != null
+            isSignInSuccess(isSuccess)
+            if (isSuccess) {
+                insertUser(email, password)
+            }
+        } catch (e: Exception) {
+            Log.e("authenticate", "Login failed: ${e.message}")
+            isSignInSuccess(false)
+        }
+    }
+
+    suspend fun insertUser(userName: String, password: String): Long {
+        val userEntity =
+            UserEntity(currentUserId = currentUserId, userName = userName, password = password)
+        return noteDao.insertUser(userEntity)
     }
 
 //    override suspend fun sendRecoveryEmail(email: String) {

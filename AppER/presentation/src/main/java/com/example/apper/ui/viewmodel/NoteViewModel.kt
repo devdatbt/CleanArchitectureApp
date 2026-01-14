@@ -11,7 +11,10 @@ import com.example.apper.usecase.AppUseCase
 import com.example.apper.utils.Resource
 import com.example.domain.model.Currency
 import com.example.domain.model.Note
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class NoteViewModel(private val appUseCase: AppUseCase) : BaseViewModel() {
 
@@ -105,7 +108,7 @@ class NoteViewModel(private val appUseCase: AppUseCase) : BaseViewModel() {
         return if (searchValue.isEmpty()) {
             listFilter
         } else {
-            listFilter.filter { note -> note.getTitleContainsWord(searchValue) }
+            listFilter.filter { note -> note.getTitleContainsWord(searchValue) == true }
         }
     }
 
@@ -154,5 +157,9 @@ class NoteViewModel(private val appUseCase: AppUseCase) : BaseViewModel() {
                 deleteNote(event.note)
             }
         }
+    }
+
+    suspend fun getCurrentUser(): String {
+        return appUseCase.getCurrentUserUseCase.invoke()
     }
 }

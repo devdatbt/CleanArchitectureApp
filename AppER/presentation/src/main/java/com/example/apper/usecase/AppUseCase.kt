@@ -6,6 +6,7 @@ import com.example.domain.usecase.AutheticateUseCase
 import com.example.domain.usecase.DeleteItemToFireStoreUseCase
 import com.example.domain.usecase.DeleteNoteUseCase
 import com.example.domain.usecase.GetCurrencyUseCase
+import com.example.domain.usecase.GetCurrentUserUseCase
 import com.example.domain.usecase.GetNoteListsUseCase
 import com.example.domain.usecase.GetNoteWithIdUseCase
 import com.example.domain.usecase.SignOutUseCase
@@ -22,4 +23,5 @@ data class AppUseCase(
     val signOutUseCase: SignOutUseCase,
     val addItemToFireStoreUseCase: AddItemToFireStoreUseCase,
     val deleteItemToFireStoreUseCase: DeleteItemToFireStoreUseCase,
+    val getCurrentUserUseCase: GetCurrentUserUseCase
 )

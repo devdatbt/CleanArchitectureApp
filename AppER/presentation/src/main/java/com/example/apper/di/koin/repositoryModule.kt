@@ -13,6 +13,6 @@ val repositoryModule = module {
         NoteRepositoryImpl(get())
     }
     single {
-        AccountServiceImpl(get(), get())
+        AccountServiceImpl(get(), get(), get())
     }
 }
